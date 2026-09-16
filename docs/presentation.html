@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaAgent - Hackathon Pitch Deck (8 Slides)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #111827;
+      --border-color: #1f2937;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.2);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #a855f7;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .brand-tag {
+      font-size: 0.75rem;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .slide-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .nav-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn-nav {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: #374151;
+      border-color: var(--primary);
+    }
+
+    /* Deck Layout */
+    .deck-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1150px;
+      height: 85%;
+      max-height: 680px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px) scale(0.98);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Typography */
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+      line-height: 1.4;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    /* Cards & Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card.highlight-blue {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(56, 189, 248, 0.06);
+    }
+
+    .card.highlight-green {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .card.highlight-red {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .card.highlight-purple {
+      border-color: rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.06);
+    }
+
+    /* Stepper */
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.25rem;
+    }
+
+    .step-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #090d16;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    .step-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .step-desc {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .step-arrow {
+      color: #4b5563;
+      font-size: 1.1rem;
+    }
+
+    .mono-tag {
+      font-family: 'JetBrains Mono', monospace;
+      background: #1e293b;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: #38bdf8;
+      font-size: 0.82rem;
+    }
+
+    ul.bullet-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    ul.bullet-list li {
+      position: relative;
+      padding-left: 1.4rem;
+      font-size: 0.9rem;
+      color: #d1d5db;
+      line-height: 1.45;
+    }
+
+    ul.bullet-list li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+      top: -1px;
+    }
+
+    .slide-footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Bottom progress bar */
+    .progress-bar-container {
+      height: 4px;
+      background: #111827;
+      width: 100%;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      width: 12.5%;
+      transition: width 0.3s ease;
+    }
+
+    /* Print & PDF Export Rules */
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0;
+      }
+
+      body {
+        background-color: #090d16 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+
+      .top-bar, .progress-bar-container, .nav-controls {
+        display: none !important;
+      }
+
+      .deck-container {
+        display: block !important;
+        padding: 0 !important;
+        height: auto !important;
+        position: static !important;
+      }
+
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        display: flex !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 100% !important;
+        max-height: 100vh !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 3rem 4.5rem !important;
+        background-color: #111827 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .card {
+        background: #0f172a !important;
+        border-color: #374151 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="brand">
+      <span>💧 AquaAgent</span>
+      <span class="brand-tag">8-Slide Hackathon Pitch</span>
+    </div>
+    <div class="slide-indicator" id="slideIndicator">Slide 1 / 8</div>
+    <div class="nav-controls">
+      <button class="btn-nav" onclick="prevSlide()">◀ Prev (←)</button>
+      <button class="btn-nav" onclick="nextSlide()">Next (→) ▶</button>
+      <button class="btn-nav" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+      <button class="btn-nav" onclick="window.print()" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); color: #34d399;">📥 Save as PDF (Ctrl+P)</button>
+    </div>
+  </header>
+
+  <!-- Deck Container -->
+  <main class="deck-container">
+
+    <!-- SLIDE 1: Title Slide -->
+    <section class="slide active">
+      <span class="slide-badge">Autonomous Agentic IoT</span>
+      <h1 class="slide-title" style="font-size: 2.8rem; line-height: 1.15; margin-top: 0.5rem;">AquaAgent</h1>
+      <p class="slide-subtitle" style="font-size: 1.25rem; color: var(--primary); font-weight: 500;">
+        Autonomous AI Agent for Smart Water Leakage Detection & Real-Time Adaptive Response
+      </p>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card highlight-blue">
+            <div class="card-title">🤖 Real Agentic AI</div>
+            <div class="card-text">Closed-loop <span class="mono-tag">OBSERVE → DECIDE → ACT → EVALUATE → ADAPT</span> workflow with dynamic re-planning.</div>
+          </div>
+          <div class="card highlight-purple">
+            <div class="card-title">⚡ 100% TS/JS Stack</div>
+            <div class="card-text">Zero Python. Built exclusively with Node.js, Express, SQLite, React, Recharts & Arduino C++ for ESP32.</div>
+          </div>
+          <div class="card highlight-green">
+            <div class="card-title">🛡️ Deterministic Safety</div>
+            <div class="card-text">100% offline functionality. Mass-balance physics engine + optional LLM tactical explanation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Hackathon Pitch Deck</span>
+        <span>Team AquaAgent</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <section class="slide">
+      <span class="slide-badge">The Real-World Crisis</span>
+      <h2 class="slide-title">Problem: Water Loss & Fragile Automation</h2>
+      <p class="slide-subtitle">Why traditional systems fail during critical pipeline ruptures.</p>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight-red">
+            <div class="card-title" style="color: #f87171;">The Crisis</div>
+            <ul class="bullet-list">
+              <li><strong>20% to 40% Water Loss:</strong> Municipal distribution mains lose massive amounts of clean water to undetected leaks.</li>
+              <li><strong>SCADA Alert Fatigue:</strong> Existing sensors sound alarms but cannot take remedial isolation action.</li>
+              <li><strong>Manual Delay:</strong> Physical crews take hours to reach remote valves.</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-blue">
+            <div class="card-title" style="color: #38bdf8;">Why Scripts Fail & Why We Need Agents</div>
+            <ul class="bullet-list">
+              <li><strong>No Verification:</strong> Scripts execute commands and assume the pipe is closed without checking post-action telemetry.</li>
+              <li><strong>Crash on Jam:</strong> If a valve mechanically jams, static scripts halt.</li>
+              <li><strong>AquaAgent Solution:</strong> An autonomous agent that observes feedback, adapts to backup valves, and verifies recovery.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Problem & Opportunity</span>
+        <span>Target: Municipal Grids, Smart Campuses, Industrial Facilities</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: The Agentic Workflow -->
+    <section class="slide">
+      <span class="slide-badge">The Core Loop</span>
+      <h2 class="slide-title">How AquaAgent Works: 6-Step Loop</h2>
+      <p class="slide-subtitle">Autonomous cycle from telemetry intake to verified physical recovery.</p>
+
+      <div class="slide-body">
+        <div class="stepper">
+          <div class="step">
+            <div class="step-circle">1</div>
+            <div class="step-name">OBSERVE</div>
+            <div class="step-desc">Flow & Pressure</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step">
+            <div class="step-circle">2</div>
+            <div class="step-name">ANALYZE</div>
+            <div class="step-desc">Mass Balance</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step">
+            <div class="step-circle">3</div>
+            <div class="step-name">DECIDE</div>
+            <div class="step-desc">Select Valve</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step">
+            <div class="step-circle">4</div>
+            <div class="step-name">ACT</div>
+            <div class="step-desc">Dispatch Tool</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step">
+            <div class="step-circle">5</div>
+            <div class="step-name">EVALUATE</div>
+            <div class="step-desc">Verify Pressure</div>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step">
+            <div class="step-circle">6</div>
+            <div class="step-name">ADAPT</div>
+            <div class="step-desc">Re-plan on Jam</div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 0.5rem;">
+          <div class="card">
+            <div class="card-title">1. Intake & Anomaly</div>
+            <div class="card-text">Calculates water deficit: <span class="mono-tag">Loss = Flow_In - Flow_Out</span>.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">2. Actuation</div>
+            <div class="card-text">Commands motorized isolation valves via typed tool interfaces.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">3. Recovery Proof</div>
+            <div class="card-text">Verifies pressure recovery curve before declaring incident resolved.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Agentic Philosophy</span>
+        <span>Goal-Driven • Multi-Step • Self-Correcting</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Architecture & Tech Stack -->
+    <section class="slide">
+      <span class="slide-badge">System Design</span>
+      <h2 class="slide-title">System Architecture & Clean Tech Stack</h2>
+      <p class="slide-subtitle">Modern, modular 3-tier architecture with zero Python dependencies.</p>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card highlight-blue">
+            <div class="card-title">1. IoT Hardware (ESP32)</div>
+            <ul class="bullet-list">
+              <li>ESP32 Microcontroller Node</li>
+              <li>Pulse Flow Sensors (GPIO 18 & 19)</li>
+              <li>Pressure Transducer (ADC GPIO 34)</li>
+              <li>Direct WiFi HTTP JSON Telemetry</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-purple">
+            <div class="card-title">2. Agent Core (Node.js)</div>
+            <ul class="bullet-list">
+              <li><span class="mono-tag">AgentController</span> (Loop Orchestrator)</li>
+              <li><span class="mono-tag">DecisionEngine</span> & <span class="mono-tag">AdaptationEngine</span></li>
+              <li><span class="mono-tag">ToolRegistry</span> (Safe Typed Tools)</li>
+              <li>SQLite Persistent Incident Database</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-green">
+            <div class="card-title">3. Operations UI (React)</div>
+            <ul class="bullet-list">
+              <li>React 18, Vite & Recharts Charts</li>
+              <li>Server-Sent Events (SSE Live Stream)</li>
+              <li>Dynamic SVG Pipeline Topology</li>
+              <li>Real-Time Step Audit Feed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Engineering Excellence</span>
+        <span>100% TypeScript / Node.js • Type Safe • High Performance</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Leakage Logic & Tool Registry -->
+    <section class="slide">
+      <span class="slide-badge">Physics & Safe Tools</span>
+      <h2 class="slide-title">Leakage Logic & Structured Tool Registry</h2>
+      <p class="slide-subtitle">Mathematical thresholds driving safe, typed tool execution.</p>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight-blue">
+            <div class="card-title">Deterministic Classification Logic</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: #0b1120; padding: 0.8rem; border-radius: 6px; line-height: 1.6; color: #38bdf8;">
+              LossPercentage = (Flow_In - Flow_Out) / Flow_In<br><br>
+              🟢 <strong>NORMAL:</strong> Loss &lt; 10% &amp; Pressure &ge; 2.5 bar<br>
+              🟡 <strong>MEDIUM:</strong> Loss &ge; 10%<br>
+              🔴 <strong>HIGH:</strong> Loss &ge; 25% OR Pressure &lt; 2.0 bar
+            </div>
+          </div>
+
+          <div class="card highlight-purple">
+            <div class="card-title">Structured Tool Registry</div>
+            <ul class="bullet-list" style="font-size: 0.84rem;">
+              <li><span class="mono-tag">getSensorData()</span>: Live telemetry reading</li>
+              <li><span class="mono-tag">analyzeLeakage()</span>: Fluid mass balance calculation</li>
+              <li><span class="mono-tag">controlValve(id, action)</span>: Physical actuator control</li>
+              <li><span class="mono-tag">verifyRecovery()</span>: Post-action hydraulic check</li>
+              <li><span class="mono-tag">sendAlert(msg, severity)</span>: Emergency dispatch</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Safety Boundary</span>
+        <span>No blackbox hallucinations • 100% Structured Tool Execution</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Flagship Demo - Failure + Adaptation -->
+    <section class="slide">
+      <span class="slide-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">🔥 Flagship Feature</span>
+      <h2 class="slide-title">Failure Detection + Dynamic Adaptation</h2>
+      <p class="slide-subtitle">How AquaAgent self-heals when physical actuators fail.</p>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight-red">
+            <div class="card-title" style="color: #f87171;">1. Actuator Fault Intercepted</div>
+            <ul class="bullet-list">
+              <li>High leak detected: <span class="mono-tag">In: 100 L/s, Out: 58 L/s, Press: 1.6 bar</span>.</li>
+              <li>Agent commands primary <strong>Valve 1</strong> to close.</li>
+              <li><strong>Valve 1 mechanically jams</strong> and returns hardware fault.</li>
+              <li>Agent emits <span class="mono-tag">FAILURE</span> and traps error gracefully.</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-green">
+            <div class="card-title" style="color: #34d399;">2. Dynamic Re-Planning & Recovery</div>
+            <ul class="bullet-list">
+              <li><span class="mono-tag">AdaptationEngine</span> triggers alternative isolation plan.</li>
+              <li>Agent commands backup redundant <strong>Valve 2</strong>.</li>
+              <li>Valve 2 closes successfully $\rightarrow$ leak isolated.</li>
+              <li>Agent executes <span class="mono-tag">verifyRecovery()</span>: Loss drops to $2.5\%$, pressure normalizes to $3.15\text{ bar}$.</li>
+              <li>Final Status: <strong style="color: #34d399;">ADAPTED_AND_RESOLVED</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Live Hackathon Demo</span>
+        <span>OBSERVE ➔ ANALYZE ➔ DECIDE ➔ ACT ➔ FAILURE ➔ ADAPT ➔ ACT ➔ EVALUATE ➔ VERIFY ➔ RESOLVED</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Double Failure & Automated Testing -->
+    <section class="slide">
+      <span class="slide-badge">Robustness & Quality</span>
+      <h2 class="slide-title">Fail-Safe Human Escalation & Testing</h2>
+      <p class="slide-subtitle">Guaranteed safety boundaries and automated test validation.</p>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight-red">
+            <div class="card-title">Both Valves Jammed (Fail-Safe Protocol)</div>
+            <ul class="bullet-list">
+              <li>Valve 1 fails $\rightarrow$ Agent adapts to Valve 2 $\rightarrow$ Valve 2 also fails.</li>
+              <li>Agent recognizes automated isolation is impossible.</li>
+              <li>Dispatches critical alert to municipal emergency repair crews.</li>
+              <li>Logs incident to SQLite database $\rightarrow$ Status: <strong style="color: #f87171;">ESCALATED</strong>.</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-blue">
+            <div class="card-title">100% Vitest Automated Test Suite</div>
+            <ul class="bullet-list">
+              <li>✅ Normal baseline monitoring test</li>
+              <li>✅ Medium & High leak detection tests</li>
+              <li>✅ Actuator mechanical jam failure tests</li>
+              <li>✅ Full Failure + Adaptation cycle test</li>
+              <li>✅ Multi-valve failure human escalation test</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Safety & Verification</span>
+        <span>Zero infinite loops • Complete test coverage with `npm test`</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Conclusion & Summary -->
+    <section class="slide">
+      <span class="slide-badge">Project Summary</span>
+      <h2 class="slide-title">AquaAgent: Impact & Future Scope</h2>
+      <p class="slide-subtitle">Transforming municipal water grids with autonomous AI control.</p>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card highlight-blue">
+            <div class="card-title">Key Hackathon Achievements</div>
+            <ul class="bullet-list">
+              <li><strong>Real Agentic Cycle:</strong> True Observe-Decide-Act-Evaluate-Adapt.</li>
+              <li><strong>Zero Python:</strong> 100% Node.js, TypeScript, React, and SQLite.</li>
+              <li><strong>Fault-Tolerant:</strong> Automatic recovery when actuators jam.</li>
+              <li><strong>Hardware-Ready:</strong> Arduino/C++ ESP32 firmware included.</li>
+            </ul>
+          </div>
+
+          <div class="card highlight-purple" style="justify-content: center; align-items: center; text-align: center;">
+            <div style="font-size: 2rem; font-weight: 800; color: #fff;">Thank You!</div>
+            <div style="font-size: 1.05rem; color: var(--primary); margin-top: 0.5rem; font-weight: 600;">Open for Live Demo & Judge Q&A</div>
+            <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+              Team AquaAgent<br>
+              Autonomous Smart Water Infrastructure
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Final Pitch</span>
+        <span>Questions & Live Dashboard Demo</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Slide Script -->
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const indicator = document.getElementById('slideIndicator');
+    const progressBar = document.getElementById('progressBar');
+
+    function updateSlide() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+      indicator.textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 'Home') {
+        currentSlide = 0;
+        updateSlide();
+      } else if (e.key === 'End') {
+        currentSlide = totalSlides - 1;
+        updateSlide();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
